@@ -36,6 +36,10 @@ resource "azurerm_linux_web_app" "webapp" {
   }
 
   app_settings = {
+    
+
+    WEBSITES_PORT = "8888"
+    APP_ENV = "production"
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
     DOCKER_REGISTRY_SERVER_URL          = "https://index.docker.io"
     DOCKER_CUSTOM_IMAGE_NAME            = "docker.io/library/${split(":", var.docker_image)[0]}:${split(":", var.docker_image)[1]}"

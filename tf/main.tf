@@ -22,7 +22,7 @@ provider "azurerm" {
   }
   
   # Registra automáticamente los proveedores necesarios
-  resource_provider_registrations = ["Microsoft.Web", "Microsoft.Insights"]
+  resource_provider_registrations = "Microsoft.Web"
 }
 
 variable "tags" {

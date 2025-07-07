@@ -24,9 +24,14 @@ resource "azurerm_linux_web_app" "webapp" {
   site_config {
     application_stack {
       docker {
-        registry_url = "https://index.docker.io"  # Docker Hub
+        registry_url = "https://index.docker.io"
         image_name   = split(":", var.docker_image)[0]
         image_tag    = split(":", var.docker_image)[1]
+      }
     }
   }
-}
+
+  app_settings = {
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
+  }
+} 

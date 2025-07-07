@@ -1,14 +1,24 @@
+# terraform/main.tf
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0" # Usa la versión 3.x más reciente
+    }
+  }
+}
+
 provider "azurerm" {
   features {}
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-webapp-example"
-  location = "West Europe"
+  name     = "rg-${var.webapp_name}"
+  location = var.location
 }
 
 resource "azurerm_service_plan" "asp" {
-  name                = "asp-webapp-example"
+  name                = "asp-${var.webapp_name}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   os_type             = "Linux"
@@ -16,22 +26,18 @@ resource "azurerm_service_plan" "asp" {
 }
 
 resource "azurerm_linux_web_app" "webapp" {
-  name                = "webapp-${replace(uuid(), "-", "")}" # Nombre único
+  name                = var.webapp_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_service_plan.asp.location
   service_plan_id     = azurerm_service_plan.asp.id
 
   site_config {
-    application_stack {
-      docker_image        = "nginx"
-      docker_image_tag    = "latest"
-      docker_registry_url = "https://index.docker.io"
-    }
+    always_on = false # Necesario para planes básicos
   }
 
-  lifecycle {
-    ignore_changes = [
-      name # Ignora cambios en el nombre generado por uuid()
-    ]
+  app_settings = {
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
+    DOCKER_REGISTRY_SERVER_URL          = "https://index.docker.io"
+    DOCKER_CUSTOM_IMAGE_NAME            = "docker.io/library/${split(":", var.docker_image)[0]}:${split(":", var.docker_image)[1]}"
   }
 }

@@ -32,6 +32,10 @@ jobs:
         with:
           terraform_version: 1.5.7
 
+      - name: Clean previous .terraform data
+        run: rm -rf .terraform .terraform.lock.hcl
+        working-directory: ./tf 
+
       - name: Terraform Init
         run: terraform init
         working-directory: ./tf

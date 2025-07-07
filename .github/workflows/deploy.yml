@@ -1,5 +1,4 @@
 name: Deploy WebApp Container
-
 on:
   push:
     branches:

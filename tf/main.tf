@@ -33,14 +33,14 @@ resource "azurerm_linux_web_app" "webapp" {
 
   site_config {
     always_on = false # Necesario para planes básicos
-    docker_image        = "kdetony/webapp"  # Sin "library/"
-    docker_image_tag    = "0.1"          # Usa tu tag correcto
+    application_stack {
+    docker_image_name        = "kdetony/webapp:0.1"  # Sin "library/"
     docker_registry_url = "https://index.docker.io"
+    docker_registry_username = var.docker_registry_username
+    docker_registry_password = var.docker_registry_password
   }
-
+}
   app_settings = {
-    DOCKER_REGISTRY_SERVER_USERNAME = var.docker_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = var.docker_password
     WEBSITES_PORT = "8888"
     APP_ENV = "production"
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"

@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      # Usar SHA del commit para tag único e inmutable
+      #IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/webapp:${{ github.sha }}
       IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/webapp:0.1
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -20,30 +22,49 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Log in to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        uses: docker/login-action@v3  # Acción oficial más segura
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
-        run: |
-          docker build -t $IMAGE_NAME ./app
-          docker push $IMAGE_NAME
+        uses: docker/build-push-action@v5  # Mejor práctica con caché
+        with:
+          context: ./app
+          push: true
+          tags: ${{ env.IMAGE_NAME }}
 
-      - name: Set up Terraform 1.5.7
+      - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.7
-
-      - name: Clean previous .terraform data
-        run: rm -rf .terraform .terraform.lock.hcl
-        working-directory: ./tf 
+          # Inyectar credenciales automáticamente
+          cli_config_credentials_token: ${{ secrets.AZURE_CLIENT_SECRET }}
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -input=false
         working-directory: ./tf
+        env:
+          # Azure Provider necesita estas variables
+          ARM_CLIENT_ID: ${{ env.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ env.ARM_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ env.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ env.ARM_TENANT_ID }}
 
       - name: Terraform Plan
-        run: terraform plan -input=false -var="docker_image=$IMAGE_NAME"
+        run: terraform plan -input=false -var="docker_image=${{ env.IMAGE_NAME }}"
         working-directory: ./tf
+        env:
+          ARM_CLIENT_ID: ${{ env.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ env.ARM_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ env.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ env.ARM_TENANT_ID }}
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false -var="docker_image=$IMAGE_NAME"
+        run: terraform apply -auto-approve -input=false -var="docker_image=${{ env.IMAGE_NAME }}"
         working-directory: ./tf
+        env:
+          ARM_CLIENT_ID: ${{ env.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ env.ARM_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ env.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ env.ARM_TENANT_ID }}

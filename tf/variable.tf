@@ -22,3 +22,11 @@ variable "docker_image" {
   description = "Imagen de Docker (Docker Hub)"
   default     = "kdetony/webapp:0.1" 
 }
+
+variable "docker_username" {
+  sensitive = true
+}
+
+variable "docker_password" {
+  sensitive = true
+}

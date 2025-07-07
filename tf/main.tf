@@ -13,6 +13,13 @@ provider "azurerm" {
   features {}
 }
 
+variable "tags" {
+  default = {
+    source = "Terraform"
+    env    = "Dev"
+  }
+}
+
 variable "docker_image" {
   description = "Docker image to deploy on webapps"
   type        = string
@@ -20,7 +27,7 @@ variable "docker_image" {
 
 resource "azurerm_resource_group" "rg" {
   name     = "rg-webapp-github"
-  location = "East US"
+  location = "Chile Central"
 }
 
 resource "azurerm_app_service_plan" "asp" {
@@ -29,8 +36,8 @@ resource "azurerm_app_service_plan" "asp" {
   resource_group_name = azurerm_resource_group.rg.name
 
   sku {
-    tier = "Basic"
-    size = "B1"
+    tier = "Free"
+    size = "F1"
   }
 }
 

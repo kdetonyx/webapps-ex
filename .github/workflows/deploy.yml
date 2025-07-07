@@ -27,11 +27,11 @@ jobs:
 
     - name: Terraform Init
       run: terraform init
-      working-directory: ./terraform
+      working-directory: ./tf
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
-      working-directory: ./terraform
+      working-directory: ./tf
       env:
         TF_VAR_docker_image: "kdetony/webapp:0.1"
         TF_VAR_webapp_name: "webappcntnr-20251"

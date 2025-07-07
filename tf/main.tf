@@ -22,16 +22,19 @@ resource "azurerm_linux_web_app" "webapp" {
   service_plan_id     = azurerm_service_plan.asp.id
 
   site_config {
+    # Configuración específica para contenedores
     application_stack {
-      docker {
-        registry_url = "https://index.docker.io"
-        image_name   = split(":", var.docker_image)[0]
-        image_tag    = split(":", var.docker_image)[1]
-      }
+      docker_image     = split(":", var.docker_image)[0]
+      docker_image_tag = split(":", var.docker_image)[1]
     }
+    
+    # Agrega esto si usas Docker Hub
+    container_registry_use_managed_identity = false
   }
 
+  # URL del registro (Docker Hub)
   app_settings = {
+    DOCKER_REGISTRY_SERVER_URL = "https://index.docker.io"
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
   }
 } 

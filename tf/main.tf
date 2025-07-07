@@ -18,10 +18,6 @@ provider "azurerm" {
   features {}
   resource_provider_registrations = "all"
   }
-  
-  # Registra automáticamente los proveedores necesarios
-  resource_provider_registrations = "Microsoft.Web"
-}
 
 variable "tags" {
   default = {

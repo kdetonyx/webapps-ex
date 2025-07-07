@@ -34,4 +34,4 @@ jobs:
       working-directory: ./terraform
       env:
         TF_VAR_docker_image: "kdetony/webapp:0.1" # Ej: nginx:latest
-        TF_VAR_webapp_name: "webappcontainer" # ¡Debe ser único!
+        TF_VAR_webapp_name: "webappcntnr-20251" # ¡Debe ser único!

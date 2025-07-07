@@ -22,15 +22,21 @@ jobs:
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
-      with:
-        terraform_wrapper: false
 
     - name: Terraform Init
       run: terraform init
       working-directory: ./tf
 
+    - name: Terraform Validate
+      run: terraform validate
+      working-directory: ./tf
+
+    - name: Generate unique name
+      id: unique_name
+      run: echo "name=webapp-$(date +%s)" >> $GITHUB_OUTPUT
+
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve -var="webapp_name=${{ steps.unique_name.outputs.name }}"
       working-directory: ./tf
       env:
         TF_VAR_docker_image: "kdetony/webapp:0.1"

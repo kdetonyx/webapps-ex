@@ -5,7 +5,7 @@ variable "resource_group_name" {
 
 variable "location" {
   description = "Región de Azure"
-  default     = "South Central US"
+  default     = "Central US"
 }
 
 variable "app_service_plan_name" {

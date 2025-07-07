@@ -62,7 +62,4 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -var="docker_image=$IMAGE_NAME" -var="service_principal_object_id=${{ secrets.SERVICE_PRINCIPAL_OBJECT_ID }}"
-        working-directory: ./tf    
-          ARM_CLIENT_SECRET: ${{ env.ARM_CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ env.ARM_SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ env.ARM_TENANT_ID }}
+        working-directory: ./tf   

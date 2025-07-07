@@ -23,8 +23,10 @@ resource "azurerm_linux_web_app" "webapp" {
 
   site_config {
     application_stack {
-      docker_image     = var.docker_image
-      docker_image_tag = "latest"
+      docker {
+        registry_url = "https://index.docker.io"  # Docker Hub
+        image_name   = split(":", var.docker_image)[0]
+        image_tag    = split(":", var.docker_image)[1]
     }
   }
 }

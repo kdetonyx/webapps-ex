@@ -38,6 +38,8 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -auto-approve -var="webapp_name=${{ steps.unique_name.outputs.name }}"
       working-directory: ./tf
-      env:
-        TF_VAR_docker_image: "kdetony/webapp:0.1"
-        TF_VAR_webapp_name: "webappcnt-$(date +%s)"  #hora
+      env: 
+             TF_VAR_docker_username: ${{ secrets.DOCKER_USERNAME }}
+             TF_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
+             TF_VAR_docker_image: "kdetony/webapp:0.1"
+             TF_VAR_webapp_name: "webappcnt-$(date +%s)"  #hora

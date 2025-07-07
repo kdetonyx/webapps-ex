@@ -35,9 +35,7 @@ resource "azurerm_linux_web_app" "webapp" {
     always_on = false # Necesario para planes básicos
     application_stack {
     docker_image_name        = "kdetony/webapp:0.1"  # Sin "library/"
-    docker_registry_url = "https://index.docker.io"
-    docker_registry_username = var.docker_registry_username
-    docker_registry_password = var.docker_registry_password
+    docker_registry_url = "https://index.docker.io"    
   }
 }
   app_settings = {

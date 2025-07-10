@@ -51,10 +51,11 @@ Click New repository secret and add the secrets from the previous step.
 🧱 Step 3: Repository Structure
 
 📁 .github/workflows
-   └── deploy.yml        # GitHub Actions workflow
-   
-📁 app/                  # Application source code
 
-📁 tf/                   # Files Terraform
+   └── deploy.yml              # GitHub Actions workflow
+   
+📁 app/                        # Application source code
+   
+📁 tf/                          # Files Terraform
 
 

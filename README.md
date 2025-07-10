@@ -52,7 +52,9 @@ Click New repository secret and add the secrets from the previous step.
 
 📁 .github/workflows
    └── deploy.yml        # GitHub Actions workflow
+   
 📁 app/                  # Application source code
+
 📁 tf/                   # Files Terraform
 
 

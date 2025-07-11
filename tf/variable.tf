@@ -20,7 +20,7 @@ variable "webapp_name" {
 
 variable "docker_image" {
   description = "Imagen de Docker (Docker Hub)"
-  default     = "kdetony/webapp:0.1" 
+  default     = "[NAME_REGISTRY]/[NAME_APP]:0.1" 
 }
 
 variable "docker_username" {

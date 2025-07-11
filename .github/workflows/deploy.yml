@@ -41,4 +41,4 @@ jobs:
              TF_VAR_docker_username: ${{ secrets.DOCKER_USERNAME }}
              TF_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
              TF_VAR_docker_image: "kdetony/webapp:0.1"
-             TF_VAR_webapp_name: "webappcnt-$(date +%s)"  #hora_1
+             TF_VAR_webapp_name: "webappcnt-$(date +%s)"  #hora_20:08
